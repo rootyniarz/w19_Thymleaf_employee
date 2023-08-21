@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group = 'pl.zajavka'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+ext {
+    jakartaPersistenceApiVersion = '3.1.0'
+    logbackVersion = '1.4.4'
+    lombokVersion = '1.18.24'
+    springDataVersion = '3.0.0-RC1'
+    springVersion = '6.0.0-RC1'
+    hibernateVersion = '6.1.4.Final'
+    postgresqlDriverVersion = '42.5.0'
+    junitVersion = '5.9.1'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+dependencies {
+    // pozostałe zależności
+    // Spring 5.X
+    // compileOnly 'javax:javaee-api:8.0.1'
+    // compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    // implementation 'org.springframework:spring-webmvc:5.3.23'
+// Spring 6.X
+    compileOnly 'jakarta.platform:jakarta.jakartaee-api:9.1.0'
+    compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.0'
+    implementation 'org.springframework:spring-webmvc:6.0.0'
+
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+
+}
+// pozostałe ustawienia
+war {
+    archiveFileName = 'sample-web-mvc-app.war'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+compileJava.options.encoding = 'UTF-8'
