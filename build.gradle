@@ -47,7 +47,7 @@ dependencies {
 }
 // pozostałe ustawienia
 war {
-    archiveFileName = 'sample-web-mvc-app.war'
+    archiveFileName = 'java-gradle-example--project.war'
 }
 
 test {
