@@ -8,13 +8,15 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 ext {
-    jakartaPersistenceApiVersion = '3.1.0'
-    logbackVersion = '1.4.4'
+    logbackVersion = '1.4.5'
     lombokVersion = '1.18.24'
-    springDataVersion = '3.0.0-RC1'
-    springVersion = '6.0.0-RC1'
-    hibernateVersion = '6.1.4.Final'
+    springVersion = '6.0.0'
+    jakartaApiVersion='9.1.0'
+    thymeleafVersion='3.1.0.RELEASE'
+    springDataVersion = '3.0.0'
+    hibernateVersion = '6.1.5.Final'
     postgresqlDriverVersion = '42.5.0'
+    flywayVersion='9.8.2'
     junitVersion = '5.9.1'
 }
 
@@ -23,35 +25,32 @@ repositories {
     maven { url 'https://repo.spring.io/milestone' }
 }
 dependencies {
-    // pozostałe zależności
-    // Spring 5.X
-    // compileOnly 'javax:javaee-api:8.0.1'
-    // compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
-    // implementation 'org.springframework:spring-webmvc:5.3.23'
-// Spring 6.X
-    compileOnly 'jakarta.platform:jakarta.jakartaee-api:9.1.0'
-    compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.0'
-    implementation 'org.springframework:spring-webmvc:6.0.0'
-
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
-
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
+    implementation "org.springframework:spring-core:$springVersion"
+    implementation "org.springframework:spring-beans:$springVersion"
+    implementation "org.springframework:spring-context:$springVersion"
+    implementation "org.springframework:spring-context-support:$springVersion"
+    implementation "org.springframework:spring-expression:$springVersion"
+    implementation "org.springframework:spring-jdbc:$springVersion"
+    implementation "org.springframework:spring-tx:$springVersion"
+    compileOnly "jakarta.platform:jakarta.jakartaee-api:$jakartaApiVersion"
+    implementation "org.springframework:spring-webmvc:$springVersion"
+    implementation "org.thymeleaf:thymeleaf:$thymeleafVersion"
+    implementation "org.thymeleaf:thymeleaf-spring6:$thymeleafVersion"
+    implementation "org.springframework.data:spring-data-jpa:$springDataVersion"
+    implementation "org.hibernate.orm:hibernate-core:$hibernateVersion"
+    implementation "org.postgresql:postgresql:$postgresqlDriverVersion"
+    implementation "org.flywaydb:flyway-core:$flywayVersion"
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
-
-    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0'
-    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
-
 }
-// pozostałe ustawienia
 war {
-    archiveFileName = 'java-gradle-example--project-v18.war'
+    archiveFileName = 'thymeleaf-example.war'
 }
+
 
 test {
     useJUnitPlatform()

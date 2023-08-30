@@ -6,6 +6,6 @@
 </head>
 <body>
 <h1>Employees</h1>
-<p>Count: ${count}, AtomicCount: ${atomicCount}</p>
+<p>Count: ${count},  AtomicCount: ${atomicCount}</p>
 </body>
 </html>
