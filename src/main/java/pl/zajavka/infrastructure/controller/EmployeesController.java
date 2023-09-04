@@ -1,4 +1,4 @@
-package pl.zajavka.controller;
+package pl.zajavka.infrastructure.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

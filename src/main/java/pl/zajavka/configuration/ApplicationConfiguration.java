@@ -1,5 +1,6 @@
 package pl.zajavka.configuration;
 
+import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import org.flywaydb.core.Flyway;
@@ -17,7 +18,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -28,7 +28,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import pl.zajavka.ComponentScanMarker;
 import pl.zajavka.infrastructure.database.entity._EntityMarker;
 import pl.zajavka.infrastructure.database.repository._JpaRepositoriesMarker;
-import jakarta.persistence.EntityManagerFactory;
+
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -43,9 +43,12 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan(basePackageClasses = ComponentScanMarker.class)
 public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationContextAware {
+
     private final Environment environment;
+
     @Setter
     private ApplicationContext applicationContext;
+
     @Bean
     @DependsOn("flyway")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -76,6 +79,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
         );
         return hibernateProperties;
     }
+
     @Bean
     public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -106,7 +110,35 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
         configuration.setDataSource(dataSource());
         return new Flyway(configuration);
     }
-    // pozostałe beany ...
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(this.applicationContext);
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        return templateResolver;
+    }
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setEnableSpringELCompiler(true);
+        return templateEngine;
+    }
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine());
+        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        return resolver;
+    }
 
 
 }
