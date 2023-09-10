@@ -1,4 +1,4 @@
-package pl.zajavka.configuration;
+package pl.zajavka.infrastructure.configuration;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
